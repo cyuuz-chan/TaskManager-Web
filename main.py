@@ -16,16 +16,17 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    # 获取进程列表
+    exclude_list = ["System Idle Process", "smss.exe", "Registry", "System","svchost.exe","csrss.exe","services.exe","wininit.exe","lsass.exe"]
     process_list = []
     for proc in psutil.process_iter(["pid", "name"]):
         try:
             pinfo = proc.as_dict(attrs=["pid", "name"])
-            process_list.append(pinfo)
+            if pinfo["name"] not in exclude_list:
+                process_list.append(pinfo)
         except psutil.NoSuchProcess:
             pass
-    # 渲染网页模板并传递进程列表数据
     return render_template("index.html", process_list=process_list)
+
 
 
 @app.route("/kill")
