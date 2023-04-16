@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Keyboard</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* General styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        /* Main styles */
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            margin-bottom: 10px;
+            cursor: pointer;
+            outline: none; /* Remove the focus outline on click */
+        }
+
+        button:hover {
+            background-color: #3e8e41;
+        }
+
+        button:active {
+            background-color: #2d5f2a;
+        }
+
+        /* Media query for small screens */
+        @media only screen and (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Keyboard</h1>
+    </header>
+
+    <main>
+        <!-- Keyboard Buttons -->
+        <button type="button" id="alt-f4">Alt+F4</button>
+        <button type="button" id="shift-f5">Shift+F5</button>
+        <button type="button" id="up">Up Arrow</button>
+        <button type="button" id="down">Down Arrow</button>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            // Add event listeners to the keyboard buttons
+            $('#alt-f4').click(function() {
+                $.ajax({
+                    url: '/keypress',
+                    type: 'POST',
+                    data: {key: 'alt+f4'},
+                    success: function(data) {
+                        console.log('Alt+F4 pressed!');
+                    }
+                });
+            });
+
+            $('#shift-f5').click(function() {
+                $.ajax({
+                    url: '/keypress',
+                    type: 'POST',
+                    data: {key: 'shift+f5'},
+                    success: function(data) {
+                        console.log('Shift+F5 pressed!');
+                    }
+                });
+            });
+
+            $('#down').click(function() {
+                $.ajax({
+                    url: '/keypress',
+                    type: 'POST',
+                    data: {key: 'down'},
+                    success: function(data) {
+                        console.log('Down arrow pressed!');
+                    }
+                });
+            });
+
+            $('#up').click(function() {
+                $.ajax({
+                    url: '/keypress',
+                    type: 'POST',
+                    data: {key: 'up'},
+                    success: function(data) {
+                        console.log('Up arrow pressed!');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

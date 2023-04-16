@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Command Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+        
+        section {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background-color: #3e8e41;
+        }
+        
+        @media screen and (max-width: 600px) {
+            form, section {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Command Page</h1>
+    </header>
+
+    <form id="command-form">
+        <label for="cmd">Enter a command:</label>
+        <input type="text" id="cmd" name="cmd" required>
+        <button type="submit" id="run-btn">Run</button>
+    </form>
+
+    <section>
+        <h2>Quick Commands</h2>
+        <p>Click any of the following buttons to quickly fill in the command input:</p>
+        <button id="msg-btn">下课提醒</button>
+        <button id="shutdown-btn">60秒关机</button>
+        <button id="cancel-shutdown-btn">取消关机</button>
+    </section>
+
+
+    <section>
+        <h2>Output</h2>
+        <div id="output-div"></div>
+    </section>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    
+    <script>
+        $('#command-form').submit(function(event) {
+            event.preventDefault();
+            var cmdInput = $('#cmd').val();
+            $.ajax({
+                type: 'POST',
+                url: '/exec_command',
+                data: {cmd: cmdInput},
+                success: function(response) {
+                    $('#output-div').html('<pre>' + response.result + '</pre>');
+                }
+            });
+        });
+
+        $('#msg-btn').click(function() {
+            $('#cmd').val('msg %username% "www"');
+        });
+
+        $('#shutdown-btn').click(function() {
+            $('#cmd').val('shutdown /s /t 60');
+        });
+        $('#cancel-shutdown-btn').click(function() {
+            $('#cmd').val('shutdown /a');
+        });
+    </script>
+</body>
+</html>

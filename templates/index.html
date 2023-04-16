@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Task Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            border: none;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #eee;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        section {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            margin-top: 20px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            th,
+            td {
+                padding: 6px;
+                font-size: 14px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Task Manager</h1>
+    </header>
+
+    <section>
+    <table>
+        <thead>
+            <tr>
+                <th>PID</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proc in process_list %}
+            <tr>
+                <td>{{ proc['pid'] }}</td>
+                <td>{{ proc['name'] }}</td>
+                <td><button onclick="killProcess('{{ proc['pid'] }}', '{{ proc['name'] }}')">Kill</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+  
+  <script>
+        function killProcess(pid, name) {
+            if (confirm("Are you sure you want to kill process " + name + " (" + pid + ")?")) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/kill?pid=" + pid);
+                xhr.onload = function () {
+                    alert(xhr.responseText);
+                    location.reload();
+                };
+                xhr.send();
+            }
+        }
+    </script>
+</body>
+
+</html>
