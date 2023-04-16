@@ -16,7 +16,7 @@ pip install psutil keyboard flask
 然后直接运行 `main.py`
 ### 管理页面
 运行后会提示你的IP地址，可以通过`5000`端口访问  
-默认打开TaskManager，若果想使用键盘控制或执行指令功能，请访问`/keyboard`或`/command`
+默认打开TaskManager，若果想使用键盘控制或执行指令功能，请访问`/keyboard`或`/command`  
 例如：
 - http://127.0.0.1:5000
 - http://192.168.1.114:5000/keyboard
